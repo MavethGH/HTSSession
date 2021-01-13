@@ -15,7 +15,7 @@ app.use(cookieParser());
 const dbClient = redis.createClient();
 
 // map session IDs to user information
-app.use('/', function (req, res) {
+app.use(function (req, res) {
     // get JWT from cookies
     let token = req.cookies['jwt'];
 
@@ -26,11 +26,9 @@ app.use('/', function (req, res) {
         // look up 'sid' field of JWT in Redis DB
         dbClient.get(decoded.sid, function (err, reply) {
             if (err) res.status(400).json(err);
-            
+
             // return session info retrieved from DB
             res.json(JSON.parse(reply));
         });
     });
-
-
 });
