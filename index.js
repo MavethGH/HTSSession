@@ -12,7 +12,7 @@ const app = express();
 app.use(cookieParser());
 
 // initialize redis
-const dbClient = redis.createClient(); 
+const dbClient = redis.createClient();
 
 // map session IDs to user information
 app.use('/', function (req, res) {
@@ -22,13 +22,15 @@ app.use('/', function (req, res) {
     // decode and verify JWT
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
         if (err) res.status(400).json(err);
-        token = decoded;
+
+        // look up 'sid' field of JWT in Redis DB
+        dbClient.get(decoded.sid, function (err, reply) {
+            if (err) res.status(400).json(err);
+            
+            // return session info retrieved from DB
+            res.json(JSON.parse(reply));
+        });
     });
 
-    // look up 'sid' field of JWT in Redis DB
-    dbClient.get(token.sid, function (err, reply) {
-        if (err) res.status(400).json(err);
-        // return session info retrieved from DB
-        res.json(JSON.parse(reply));
-    });
+
 });
