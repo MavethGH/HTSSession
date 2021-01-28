@@ -43,7 +43,7 @@ app.post(function (req, res) {
     let sid = uuid();
     
     // save session info (arbitrary JSON) to DB
-    dbClient.set(sid, JSON.stringify(req.body), function (err, reply) {
+    dbClient.set(sid, JSON.stringify(req.body), function (err) {
         if (err) res.status(400).json(err);
     });
 
