@@ -7,7 +7,8 @@ const uuid = require('uuid').v4;
 
 // routes
 const getsession = require('routes/getsession');
-const setsession = require('routes/setsessions');
+const setsession = require('routes/setsession');
+const delsession = require('routes/delsession');
 
 // load environment variables from .env file
 dotenv.config();
@@ -22,6 +23,7 @@ const dbClient = redis.createClient();
 // configure routes
 app.use('/getsession', getsession);
 app.use('/setsession', setsession);
+app.use('/delsession', delsession);
 
 // listen on port specified in environment variable
 app.listen(proces.env.PORT);
