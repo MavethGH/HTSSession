@@ -9,11 +9,11 @@ router.get(function (req, res) {
 
     // decode and verify JWT
     jwt.verify(token, process.env.SECRET, function (err, decoded) {
-        handleError(err, res);
+        utils.handleError(err, res);
 
         // look up 'sid' field of JWT in Redis DB
         dbClient.get(decoded.sid, function (err, reply) {
-            handleError(err, res);
+            utils.handleError(err, res);
 
             // return session info retrieved from DB
             res.send(reply);
